@@ -1,1 +1,116 @@
-<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Заменить шрифт для сайта в uKit.com на свой из Google Fonts</title><style>* {margin: 0; padding: 0; box-sizing: border-box;} body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;} .container {background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); padding: 40px; max-width: 700px; width: 100%;} h1 {color: #333; margin-bottom: 10px; font-size: 28px;} .subtitle {color: #666; margin-bottom: 30px; font-size: 14px;} .form-group {margin-bottom: 20px;} label {display: block; margin-bottom: 8px; color: #333; font-weight: 600;} input[type="text"] {width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;} input[type="text"]:focus {outline: none; border-color: #667eea;} .example {color: #999; font-size: 12px; margin-top: 6px;} button {width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;} button:hover {transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);} .result {margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; display: none;} .result.show {display: block; animation: slideIn 0.3s ease;} @keyframes slideIn {from {opacity: 0; transform: translateY(-10px);} to {opacity: 1; transform: translateY(0);}} .result-item {margin-bottom: 16px;} .result-label {color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;} .result-value {background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #667eea; word-break: break-all; font-family: 'Monaco', monospace; font-size: 13px; color: #333;} .copy-button {background: #28a745; padding: 8px 16px; font-size: 13px; margin-top: 8px; width: auto;} .error {background: #f8d7da; color: #721c24; padding: 12px; border-radius: 8px; margin-top: 20px; display: none;} .error.show {display: block;} .loading {display: none; text-align: center; color: #667eea;} .loading.show {display: block;}</style></head><body><div class="container"><h1>Заменить шрифт из Google Fonts на uKit</h1><p class="subtitle">Сервис генерации кода для замены шрифта на сайте, созданном на платформе uKit</p><div class="form-group"><label for="fontUrl">Вставьте ссылку на понравившийся шрифт в Google Fonts</label><input type="text" id="fontUrl" placeholder="https://fonts.google.com/specimen/Roboto"><p class="example">Пример: https://fonts.google.com/specimen/Roboto+Mono</p></div><button onclick="convertFont()">Получить код</button><div class="result" id="result"><h2>✨ Результат</h2><div class="result-item"><div class="result-label">Название шрифта</div><div class="result-value" id="fontName"></div></div><div class="result-item"><div class="result-label">Embed-код</div><div class="result-value" id="embedCode" style="white-space: pre-wrap; font-size: 12px;"></div><button class="copy-button" onclick="copyText('embedCode')">📋 Копировать</button></div></div><div class="error" id="error"></div></div><script>async function convertFont() {const url = document.getElementById('fontUrl').value.trim(); const errorEl = document.getElementById('error'); const resultEl = document.getElementById('result'); errorEl.classList.remove('show'); resultEl.classList.remove('show'); if (!url) {errorEl.textContent = '❗ Пожалуйста, введите ссылку'; errorEl.classList.add('show'); return;} try {const response = await fetch('/api/convert', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({url})}); const data = await response.json(); if (!response.ok) {errorEl.textContent = `❌ ${data.error || 'Ошибка'}`; errorEl.classList.add('show'); return;} document.getElementById('fontName').textContent = data.font_name; document.getElementById('embedCode').textContent = data.embed_code; resultEl.classList.add('show');} catch (error) {errorEl.textContent = `❌ Ошибка: ${error.message}`; errorEl.classList.add('show');}} function copyText(id) {const text = document.getElementById(id).textContent; navigator.clipboard.writeText(text).then(() => {alert('✅ Скопировано');}).catch(() => {alert('❌ Ошибка');});} document.getElementById('fontUrl').addEventListener('keypress', function(e) {if (e.key === 'Enter') convertFont();});</script></body></html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Заменить шрифт для сайта в uKit.com на свой из Google Fonts</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .container { background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); padding: 40px; max-width: 800px; width: 100%; }
+    h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+    .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+    input[type="text"] { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
+    input[type="text"]:focus { outline: none; border-color: #667eea; }
+    .example { color: #999; font-size: 12px; margin-top: 6px; }
+    button { width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3); }
+    .result { margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; display: none; }
+    .result.show { display: block; animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .result-item { margin-bottom: 16px; }
+    .result-label { color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .result-value { background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #667eea; word-break: break-all; font-family: 'Monaco', monospace; font-size: 13px; color: #333; max-height: 300px; overflow-y: auto; }
+    .copy-button { background: #28a745; padding: 8px 16px; font-size: 13px; margin-top: 8px; width: auto; }
+    .error { background: #f8d7da; color: #721c24; padding: 12px; border-radius: 8px; margin-top: 20px; display: none; }
+    .error.show { display: block; }
+    .description { color: #666; font-size: 13px; margin-top: 8px; padding: 8px; background: #e7f3ff; border-left: 3px solid #667eea; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Заменить шрифт из Google Fonts на uKit</h1>
+  <p class="subtitle">Генерация кода для замены шрифта на ВСЁМ сайте</p>
+  <div class="form-group">
+    <label for="fontUrl">Вставьте ссылку на понравившийся шрифт в Google Fonts</label>
+    <input type="text" id="fontUrl" placeholder="https://fonts.google.com/specimen/Roboto">
+    <p class="example">Пример: https://fonts.google.com/specimen/Roboto+Mono</p>
+  </div>
+  <button onclick="convertFont()">Получить код</button>
+  <div class="result" id="result">
+    <h2>✨ Результат</h2>
+    <div class="result-item">
+      <div class="result-label">Название шрифта</div>
+      <div class="result-value" id="fontName"></div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Embed-код для ВСЕГО сайта</div>
+      <div class="description">Этот код заменит шрифт на все элементы сайта с одновременно</div>
+      <div class="result-value" id="embedCode" style="white-space: pre-wrap; font-size: 12px;"></div>
+      <button class="copy-button" onclick="copyText('embedCode')">📋 Копировать</button>
+    </div>
+    <div class="result-item">
+      <div class="result-label">Google Fonts ссылка</div>
+      <div class="result-value" id="googleLink"></div>
+      <button class="copy-button" onclick="copyText('googleLink')">📋 Копировать</button>
+    </div>
+  </div>
+  <div class="error" id="error"></div>
+</div>
+
+<script>
+async function convertFont() {
+  const url = document.getElementById('fontUrl').value.trim();
+  const errorEl = document.getElementById('error');
+  const resultEl = document.getElementById('result');
+  
+  errorEl.classList.remove('show');
+  resultEl.classList.remove('show');
+  
+  if (!url) {
+    errorEl.textContent = '❌ Пожалуйста, введите ссылку';
+    errorEl.classList.add('show');
+    return;
+  }
+  
+  try {
+    const response = await fetch('/api/convert', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url })
+    });
+    const data = await response.json();
+    
+    if (!response.ok) {
+      errorEl.textContent = `❌ ${data.error || 'Ошибка'}`;
+      errorEl.classList.add('show');
+      return;
+    }
+    
+    document.getElementById('fontName').textContent = data.font_name;
+    document.getElementById('embedCode').textContent = data.embed_code;
+    document.getElementById('googleLink').textContent = data.google_link;
+    resultEl.classList.add('show');
+  } catch (error) {
+    errorEl.textContent = `❌ Ошибка: ${error.message}`;
+    errorEl.classList.add('show');
+  }
+}
+
+function copyText(id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('✅ Скопировано');
+  }).catch(() => {
+    alert('❌ Ошибка');
+  });
+}
+
+document.getElementById('fontUrl').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') convertFont();
+});
+</script>
+</body>
+</html>

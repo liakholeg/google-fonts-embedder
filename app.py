@@ -11,31 +11,29 @@ def extract_font_from_url(url):
         return font_name
     return None
 
-def generate_embed_code(font_name):
-    """Генерирует embed-код для uKit"""
+def generate_embed_code_full_site(font_name):
+    """Генирирует embed-код для замены шрифта на ВСЁМ сайте (не только для одного класса)"""
     if not font_name:
         return None
     
     font_param = font_name.replace(' ', '+')
-    google_fonts_link = f'https://fonts.googleapis.com/css2?family={font_param}&display=swap'
-    css_class = font_name.lower().replace(' ', '-')
+    google_fonts_link = f'https://fonts.googleapis.com/css2?family={font_param}:wght@100;200;300;400;500;600;700;800;900&display=swap'
     
-    embed_code = f'''<!-- Google Fonts Embed для uKit -->
+    # Код для замены шрифта на всем сайте
+    embed_code = f'''<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="{google_fonts_link}" rel="stylesheet">
 <style>
-  .ukit-font-{css_class} {{
-    font-family: '{font_name}', sans-serif;
-  }}
-</style>
-
-<!-- Как использовать: добавьте класс "ukit-font-{css_class}" к элементам -->
-<!-- Пример: <p class="ukit-font-{css_class}">Текст шрифтом {font_name}</p> -->'''
+body, h1, h2, h3, h4, h5, h6, p, a, button, div, span, input, textarea, ul, ol, li, table, th, td, label, section, article, header, footer, nav {{
+  font-family: "{font_name}", sans-serif !important;
+}}
+</style>'''
     
     return {
         'font_name': font_name,
         'google_link': google_fonts_link,
-        'css_class': css_class,
-        'embed_code': embed_code
+        'embed_code': embed_code,
+        'description': 'Код для замены шрифта на ВСЁМ сайте'
     }
 
 @app.route('/')
@@ -54,7 +52,7 @@ def convert():
     if not font_name:
         return jsonify({'error': 'Не удалось извлечь шрифт из ссылки. Проверьте URL.'}), 400
     
-    result = generate_embed_code(font_name)
+    result = generate_embed_code_full_site(font_name)
     return jsonify(result), 200
 
 if __name__ == '__main__':
